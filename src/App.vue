@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="black"
       dark
     >
       <div class="d-flex align-center">
@@ -38,19 +38,19 @@
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <MusicPlayer/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import MusicPlayer from './components/MusicPlayer';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    MusicPlayer,
   },
 
   data: () => ({
