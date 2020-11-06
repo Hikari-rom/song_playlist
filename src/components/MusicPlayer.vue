@@ -2,7 +2,7 @@
     <div>
         <!-- ontimeupdate="updateBar()" -->
             <ul>
-                <li v-for="song in songs" :key="song.title">
+                <li v-for="song in songs" :key="song.title" @click="goToSong(song.title)">
                     {{song.title}}
                 </li>
             </ul>
@@ -16,7 +16,6 @@
             <v-progress-linear height="10" rounded @change="goToPercent" 
                 background-color="error" color="success" :value="timerPercent">
             </v-progress-linear>
-            <!-- {{timer}} / {{totalDuration}} -->
             {{getTimerDuration}}
     </div>
 </template>
@@ -63,18 +62,11 @@ export default {
                 alreadyPlaying = true
 
             }
-            console.log(value)
             this.timerPercent = value
             this.timer =  (this.timerPercent * this.totalDurationSec ) / 100
             this.audioPage.currentTime = this.timer
             alreadyPlaying && (this.playing = !this.playing)
         },
-        // getDuration(){
-        //     this.totalDurationSec = Math.floor(this.audioPage.duration)
-        //     let minDuration = Math.floor( this.totalDurationSec / 60)
-        //     let secDuration = Math.floor(this.totalDurationSec - minDuration * 60)
-        //     this.totalDuration = `${minDuration} : ${secDuration}`
-        // },
         goToNext(){
             let alreadyPlaying = false
             if(!this.playing)
@@ -121,6 +113,13 @@ export default {
                 return {prev:this.songs[resultat-1],next:this.songs[resultat+1]}
             }
         },
+        goToSong(title){
+            let position = this.songs.findIndex(song => song.title === title)
+            console.log(position)
+            this.actualSong = this.songs[position]
+            this.audioPage.src = this.songs[position].mp3
+            this.position = position
+        }
     },
     computed:{
         getTimerDuration:function(){
@@ -156,8 +155,6 @@ export default {
     },
     mounted(){
         this.audioPage = new Audio(this.actualSong.mp3)
-        // setInterval(this.getTimerDuration,5000)
-        // console.log("coucou")
         this.audioPage.ontimeupdate = () => {
             this.timer = this.audioPage.currentTime
             this.timerPercent = Math.round(100*this.timer/this.totalDurationSec);
