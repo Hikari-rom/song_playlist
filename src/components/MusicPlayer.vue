@@ -7,11 +7,15 @@
                 </li>
             </ul>
             <p> Titre en cours : {{actualSong.title}} </p>
-            <v-img height="150" :src="actualSong.cover"></v-img>
-            <v-btn @click="goToPrev()">Prev</v-btn>
-            <v-btn @click="togglePlaying()">Play</v-btn>
-            <v-btn @click="goToNext()">Next</v-btn>
-            <v-progress-linear v-model="timer"></v-progress-linear>
+            <v-img contain max-height="200" :src="actualSong.cover"></v-img>
+            <div class="cent-align">
+                <v-btn @click="goToPrev()">Prev</v-btn>
+                <v-btn @click="togglePlaying()">Play</v-btn>
+                <v-btn @click="goToNext()">Next</v-btn>
+            </div>
+            <v-progress-linear height="10" rounded @change="goToPercent" 
+                background-color="error" color="success" :value="timerPercent">
+            </v-progress-linear>
             <!-- {{timer}} / {{totalDuration}} -->
             {{getTimerDuration}}
     </div>
@@ -38,6 +42,7 @@ export default {
             }
         ],
         timer:0,
+        timerPercent: 0,
         playing: false,
         actualSong:{},
         audioPage: null,
@@ -50,6 +55,20 @@ export default {
             this.playing = !this.playing
             this.totalDurationSec = this.audioPage.duration
         },
+        goToPercent(value){
+            let alreadyPlaying = false
+            if(!this.playing)
+            {
+                this.playing = !this.playing
+                alreadyPlaying = true
+
+            }
+            console.log(value)
+            this.timerPercent = value
+            this.timer =  (this.timerPercent * this.totalDurationSec ) / 100
+            this.audioPage.currentTime = this.timer
+            alreadyPlaying && (this.playing = !this.playing)
+        },
         // getDuration(){
         //     this.totalDurationSec = Math.floor(this.audioPage.duration)
         //     let minDuration = Math.floor( this.totalDurationSec / 60)
@@ -57,31 +76,37 @@ export default {
         //     this.totalDuration = `${minDuration} : ${secDuration}`
         // },
         goToNext(){
-
+            let alreadyPlaying = false
             if(!this.playing)
             {
                 this.playing = !this.playing
+                alreadyPlaying = true
             }
             let next = this.findNeighbors(this.actualSong.title).next
             if(next.title !== undefined)
             {
                 this.actualSong = next
                 this.audioPage.src = this.actualSong.mp3
-                this.totalDurationSec = this.audioPage.duration
+                this.position++
             }
+            alreadyPlaying && (this.playing = !this.playing)
         },
         goToPrev(){
+            let alreadyPlaying = false
             if(!this.playing)
             {
                 this.playing = !this.playing
+                alreadyPlaying = true
             }
             let prev = this.findNeighbors(this.actualSong.title).prev
             if(prev.title !== undefined)
             {
                 this.actualSong = prev
                 this.audioPage.src = this.actualSong.mp3
-                this.totalDurationSec = this.audioPage.duration
+                this.position--
             }
+            alreadyPlaying && (this.playing = !this.playing)
+            
         },
         findNeighbors(title){
             let resultat = this.songs.findIndex( song => song.title === title);
@@ -121,6 +146,9 @@ export default {
     watch:{
         playing:function(){
             this.playing ? this.audioPage.play() : this.audioPage.pause()
+        },
+        position:function(){
+            this.totalDurationSec = this.audioPage.duration
         }
     },
     created(){
@@ -130,12 +158,16 @@ export default {
         this.audioPage = new Audio(this.actualSong.mp3)
         // setInterval(this.getTimerDuration,5000)
         // console.log("coucou")
-        this.audioPage.loadedmetadata = () => {
-            this.totalDurationSec = this.audioPage.duration
-        }
         this.audioPage.ontimeupdate = () => {
             this.timer = this.audioPage.currentTime
+            this.timerPercent = Math.round(100*this.timer/this.totalDurationSec);
         }
     }
 }
 </script>
+
+<style scoped>
+.cent-align{
+    text-align:center;
+}
+</style>
