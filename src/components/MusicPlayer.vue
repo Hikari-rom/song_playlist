@@ -12,11 +12,14 @@
                 <v-btn @click="goToPrev()">Prev</v-btn>
                 <v-btn @click="togglePlaying()">Play</v-btn>
                 <v-btn @click="goToNext()">Next</v-btn>
+                <v-slider step="0.01" min="0" max="1" v-model="volume"></v-slider>
             </div>
-            <v-progress-linear height="10" rounded @change="goToPercent" 
-                background-color="error" color="success" :value="timerPercent">
-            </v-progress-linear>
-            {{getTimerDuration}}
+            <div class="justify-start flex-wrap ma-16">
+                <v-progress-linear height="10" rounded @change="goToPercent" 
+                    background-color="error" color="success" :value="timerPercent">
+                </v-progress-linear>
+                {{getTimerDuration}}
+            </div>
     </div>
 </template>
 <script>
@@ -47,7 +50,8 @@ export default {
         audioPage: null,
         totalDuration: "",
         totalDurationSec: 0,
-        position: 0
+        position: 0,
+        volume: 1
     }),
     methods:{
         togglePlaying() {
@@ -148,6 +152,15 @@ export default {
         },
         position:function(){
             this.totalDurationSec = this.audioPage.duration
+        },
+        volume:function(){
+            this.audioPage.volume = this.volume
+        },
+        timer:function(){
+            if(this.timer == this.totalDurationSec)
+            {
+                this.goToNext()
+            }
         }
     },
     created(){
