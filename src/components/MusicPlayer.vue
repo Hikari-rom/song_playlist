@@ -3,10 +3,12 @@
         <!-- ontimeupdate="updateBar()" -->
             <ul>
                 <li v-for="song in songs" :key="song.title" @click="goToSong(song.title)">
-                    {{song.title}}
+                    {{song.title}} <v-btn icon><v-icon>mdi-heart-plus</v-icon></v-btn>
                 </li>
             </ul>
+            <v-btn icon><v-icon>mdi-heart-multiple</v-icon></v-btn>
             <p> Titre en cours : {{actualSong.title}} </p>
+            
             <v-img contain max-height="200" :src="actualSong.cover"></v-img>
             <div class="cent-align">
                 <v-btn @click="goToPrev()">Prev</v-btn>
