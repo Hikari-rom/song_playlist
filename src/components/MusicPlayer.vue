@@ -1,9 +1,13 @@
 <template>
     <div>
         <!-- ontimeupdate="updateBar()" -->
+            List of Songs
             <ul>
-                <li v-for="song in songs" :key="song.title" @click="goToSong(song.title)">
-                    {{song.title}} <v-btn icon><v-icon>mdi-heart-plus</v-icon></v-btn>
+                <li v-for="(song,index) in songs" :key="song.title" >
+                    <div @click="goToSong(index)">
+                        {{song.title}}{{index}}
+                    </div>
+                    <v-btn icon><v-icon @click="checkFavorites(index)">mdi-heart-plus</v-icon></v-btn>
                 </li>
             </ul>
             <v-btn icon><v-icon>mdi-heart-multiple</v-icon></v-btn>
@@ -16,12 +20,16 @@
                 <v-btn @click="goToNext()">Next</v-btn>
                 <v-slider step="0.01" min="0" max="1" v-model="volume"></v-slider>
             </div>
+            <div>cc
+                {{favorites}}
+                </div>
             <div class="justify-start flex-wrap ma-16">
                 <v-progress-linear height="10" rounded @change="goToPercent" 
                     background-color="error" color="success" :value="timerPercent">
                 </v-progress-linear>
                 {{getTimerDuration}}
             </div>
+            
     </div>
 </template>
 <script>
@@ -45,6 +53,7 @@ export default {
                 cover: "https://www.free-stock-music.com/thumbnails/chillin_wolf-this-valley-of-untold-emotion.jpg"
             }
         ],
+        favorites:[],
         timer:0,
         timerPercent: 0,
         playing: false,
@@ -60,6 +69,19 @@ export default {
             this.playing = !this.playing
             this.totalDurationSec = this.audioPage.duration
         },
+        checkFavorites(index){
+            
+            let indexFav = this.favorites.findIndex(song => song.title === this.songs[index].title)
+            console.log(indexFav)
+            if( indexFav === -1 ){
+                this.favorites.push(this.songs[index])
+            }
+            else
+            {
+                this.favorites.splice(indexFav, 1)
+            }
+            
+1        },
         goToPercent(value){
             let alreadyPlaying = false
             if(!this.playing)
@@ -75,7 +97,7 @@ export default {
         },
         goToNext(){
             let alreadyPlaying = false
-            if(!this.playing)
+            if(this.playing)
             {
                 this.playing = !this.playing
                 alreadyPlaying = true
@@ -119,9 +141,7 @@ export default {
                 return {prev:this.songs[resultat-1],next:this.songs[resultat+1]}
             }
         },
-        goToSong(title){
-            let position = this.songs.findIndex(song => song.title === title)
-            console.log(position)
+        goToSong(position){
             this.actualSong = this.songs[position]
             this.audioPage.src = this.songs[position].mp3
             this.position = position
