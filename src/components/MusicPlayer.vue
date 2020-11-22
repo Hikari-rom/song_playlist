@@ -7,12 +7,30 @@
                     <div @click="goToSong(index)">
                         {{song.title}}{{index}}
                     </div>
-                    <v-btn icon><v-icon @click="checkFavorites(index)">mdi-heart-plus</v-icon></v-btn>
+                    <v-btn icon><v-icon @click="checkFavorites(index)" class="isFav">mdi-heart-plus</v-icon></v-btn>
+                    <v-btn icon><v-icon @click="addToWaitingList(index)">mdi-playlist-plus</v-icon></v-btn>
                 </li>
             </ul>
-            <v-btn icon><v-icon>mdi-heart-multiple</v-icon></v-btn>
             <p> Titre en cours : {{actualSong.title}} </p>
-            
+            <v-dialog max-width="290">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                        <v-icon>mdi-heart-multiple</v-icon>
+                    </v-btn>
+                </template>
+                <v-card>
+                    <v-card-title class="headline">
+                        Favorites List
+                    </v-card-title>
+                    <v-card-text>
+                        <ul>
+                            <li v-for="fav in favorites" :key="fav.title">
+                                {{fav.title}}
+                            </li>
+                        </ul>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
             <v-img contain max-height="200" :src="actualSong.cover"></v-img>
             <div class="cent-align">
                 <v-btn @click="goToPrev()">Prev</v-btn>
@@ -20,16 +38,12 @@
                 <v-btn @click="goToNext()">Next</v-btn>
                 <v-slider step="0.01" min="0" max="1" v-model="volume"></v-slider>
             </div>
-            <div>cc
-                {{favorites}}
-                </div>
             <div class="justify-start flex-wrap ma-16">
                 <v-progress-linear height="10" rounded @change="goToPercent" 
                     background-color="error" color="success" :value="timerPercent">
                 </v-progress-linear>
                 {{getTimerDuration}}
             </div>
-            
     </div>
 </template>
 <script>
@@ -40,19 +54,35 @@ export default {
             {
                 title: "Lucid Dreaming",
                 mp3: "https://www.free-stock-music.com/music/fsm-team-escp-lucid-dreaming.mp3",
-                cover: "https://www.free-stock-music.com/thumbnails/fsm-team-escp-lucid-dreaming.jpg"
+                cover: "https://www.free-stock-music.com/thumbnails/fsm-team-escp-lucid-dreaming.jpg",
+                favorite: false,
+                artist:{
+                    firstName:"Kristian",
+                    lastName:"Kostov",
+                }
             },
             {
-                title: "PotatoFries",
+                title: "Potato Fries",
                 mp3: "https://www.free-stock-music.com/music/potatofries-maittre-sara-olsen-ocean.mp3",
-                cover: "https://www.free-stock-music.com/thumbnails/potatofries-maittre-sara-olsen-ocean.jpg"
+                cover: "https://www.free-stock-music.com/thumbnails/potatofries-maittre-sara-olsen-ocean.jpg",
+                favorite: false,
+                artist:{
+                    firstName:"Charlotte",
+                    lastName:"Perrelli",
+                }
             },
             {  
                 title: "This valley of Untold Emotion",
                 mp3: "https://www.free-stock-music.com/music/chillin_wolf-this-valley-of-untold-emotion.mp3",
-                cover: "https://www.free-stock-music.com/thumbnails/chillin_wolf-this-valley-of-untold-emotion.jpg"
+                cover: "https://www.free-stock-music.com/thumbnails/chillin_wolf-this-valley-of-untold-emotion.jpg",
+                favorite: false,
+                artist:{
+                    firstName:"Yoko",
+                    lastName:"Shimomura",
+                }
             }
         ],
+        waitingList:[],
         favorites:[],
         timer:0,
         timerPercent: 0,
@@ -75,13 +105,19 @@ export default {
             console.log(indexFav)
             if( indexFav === -1 ){
                 this.favorites.push(this.songs[index])
+                this.songs[index].favorite = true
             }
             else
             {
                 this.favorites.splice(indexFav, 1)
+                this.songs[index].favorite = false
             }
             
-1        },
+        },
+        addToWaitingList(index){
+            console.log(index)
+            this.waitingList.push(this.songs[index])
+        },
         goToPercent(value){
             let alreadyPlaying = false
             if(!this.playing)
@@ -102,12 +138,21 @@ export default {
                 this.playing = !this.playing
                 alreadyPlaying = true
             }
-            let next = this.findNeighbors(this.actualSong.title).next
-            if(next.title !== undefined)
+            if(this.waitingList.length > 0)
             {
-                this.actualSong = next
+                let nextSong = this.waitingList.shift()
+                // Pas propre
+                this.actualSong = nextSong
                 this.audioPage.src = this.actualSong.mp3
-                this.position++
+            }
+            else{
+                let next = this.findNeighbors(this.actualSong.title).next
+                if(next.title !== undefined)
+                {
+                    this.actualSong = next
+                    this.audioPage.src = this.actualSong.mp3
+                    this.position++
+                }
             }
             alreadyPlaying && (this.playing = !this.playing)
         },
@@ -199,7 +244,12 @@ export default {
 </script>
 
 <style scoped>
+.isFav{
+    color: red;
+}
 .cent-align{
     text-align:center;
 }
+
+
 </style>
