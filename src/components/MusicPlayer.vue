@@ -2,15 +2,29 @@
     <div>
         <!-- ontimeupdate="updateBar()" -->
             List of Songs
-            <ul>
+            <!-- <ul>
                 <li v-for="(song,index) in songs" :key="song.title" >
                     <div @click="goToSong(index)">
                         {{song.title}}{{index}}
                     </div>
-                    <v-btn icon><v-icon @click="checkFavorites(index)" class="isFav">mdi-heart-plus</v-icon></v-btn>
+                    <v-btn icon><v-icon @click="checkFavorites(index)" :class="{'isFav':song.favorite===true}">mdi-heart</v-icon></v-btn>
                     <v-btn icon><v-icon @click="addToWaitingList(index)">mdi-playlist-plus</v-icon></v-btn>
                 </li>
-            </ul>
+            </ul> -->
+            <v-data-table
+                :headers="headers"
+                :items="songs"
+                item-key="title"
+                :search="search"
+                >
+                <template v-slot:top>
+                    <v-text-field
+                        v-model="search"
+                        label="Search"
+                    ></v-text-field>
+                </template>
+            </v-data-table>
+
             <p> Titre en cours : {{actualSong.title}} </p>
             <v-dialog max-width="290">
                 <template v-slot:activator="{ on, attrs }">
@@ -82,6 +96,7 @@ export default {
                 }
             }
         ],
+        search:'',
         waitingList:[],
         favorites:[],
         timer:0,
@@ -211,6 +226,18 @@ export default {
             minDuration < 10 && (minDuration = `0${minDuration}`)
             secDuration < 10 && (secDuration = `0${secDuration}`)
             return `${minDuration} : ${secDuration}`
+        },
+        headers:function(){
+            return [
+                {
+                    text: 'Title',
+                    value: 'title',
+                },
+                {
+                    text: 'Artiste',
+                    value: 'artist.lastName'
+                }
+            ]
         }
     },
     watch:{
@@ -243,9 +270,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .isFav{
-    color: red;
+    color: red !important;
 }
 .cent-align{
     text-align:center;
