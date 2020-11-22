@@ -23,6 +23,18 @@
                         label="Search"
                     ></v-text-field>
                 </template>
+                <template
+                 v-slot:body>
+                <tbody>
+                    <tr
+                        v-for="song in songs"
+                        :key="song.title">
+                        <td>{{song.title}}</td>
+                        <td>{{song.artist.firstName}} {{song.artist.lastName}}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                </template>
             </v-data-table>
 
             <p> Titre en cours : {{actualSong.title}} </p>
@@ -235,7 +247,11 @@ export default {
                 },
                 {
                     text: 'Artiste',
-                    value: 'artist.lastName'
+                    value: `artist.lastName`
+                },
+                {
+                    text: 'Actions',
+                    value: 'artist.firstName'
                 }
             ]
         }
