@@ -2,15 +2,6 @@
     <div>
         <!-- ontimeupdate="updateBar()" -->
             List of Songs
-            <!-- <ul>
-                <li v-for="(song,index) in songs" :key="song.title" >
-                    <div @click="goToSong(index)">
-                        {{song.title}}{{index}}
-                    </div>
-                    <v-btn icon><v-icon @click="checkFavorites(index)" :class="{'isFav':song.favorite===true}">mdi-heart</v-icon></v-btn>
-                    <v-btn icon><v-icon @click="addToWaitingList(index)">mdi-playlist-plus</v-icon></v-btn>
-                </li>
-            </ul> -->
             <v-data-table
                 :headers="headers"
                 :items="songs"
@@ -87,6 +78,7 @@ export default {
                 cover: "https://www.free-stock-music.com/thumbnails/fsm-team-escp-lucid-dreaming.jpg",
                 favorite: false,
                 artist:{
+                    id:1,
                     firstName:"Kristian",
                     lastName:"Kostov",
                 }
@@ -98,6 +90,7 @@ export default {
                 cover: "https://www.free-stock-music.com/thumbnails/potatofries-maittre-sara-olsen-ocean.jpg",
                 favorite: false,
                 artist:{
+                    id:2,
                     firstName:"Charlotte",
                     lastName:"Perrelli",
                 }
@@ -109,6 +102,7 @@ export default {
                 cover: "https://www.free-stock-music.com/thumbnails/chillin_wolf-this-valley-of-untold-emotion.jpg",
                 favorite: false,
                 artist:{
+                    id:3,
                     firstName:"Yoko",
                     lastName:"Shimomura",
                 }
@@ -249,15 +243,12 @@ export default {
             return [
                 {
                     text: 'Title',
-                    value: 'title',
                 },
                 {
                     text: 'Artiste',
-                    value: `artist.lastName`
                 },
                 {
                     text: 'Actions',
-                    value: 'artist.firstName'
                 }
             ]
         }

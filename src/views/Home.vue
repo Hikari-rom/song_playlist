@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MusicPlayer/>
+    <!-- <MusicPlayer/> -->
   </div>
 </template>
 

@@ -13,7 +13,7 @@
 
     <h1>Hello la promo Ynov !</h1>
     <h3>Bienvenue sur Ynov Songs :)</h3>
-
+<!-- 
     <button @click="loaded = true">Chargement des Todos</button>
     <Todos v-if="loaded"></Todos>
 
@@ -52,13 +52,13 @@
       <template v-slot:header>
         <h1>Liste des {{ filterPrenoms.length }} prénoms</h1>
       </template>
-    </Liste>
+    </Liste> -->
   </v-container>
 </template>
 
 <script>
-import Liste from "./Liste"; // 1 import
-import Todos from "./Todos";
+// import Liste from "./Liste"; // 1 import
+// import Todos from "./Todos";
 export default {
   name: "HelloWorld",
   props: {
@@ -94,8 +94,8 @@ export default {
     },
   },
   components: {
-    Liste, // 2 use
-    Todos,
+    // Liste, // 2 use
+    // Todos,
   },
   computed: {
     nbLike() {

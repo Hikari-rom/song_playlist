@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
+    <!-- <v-app-bar
       app
       color="black"
       dark
@@ -35,16 +35,19 @@
         <span class="mr-2">Latest Release</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
-    </v-app-bar>
+    </v-app-bar> -->
 
     <v-main>
-      <MusicPlayer/>
+      
+      <MusicPlayer>
+        <router-view></router-view>
+      </MusicPlayer>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import MusicPlayer from './components/MusicPlayer';
+  import MusicPlayer from './components/MusicPlayer';
 
 export default {
   name: 'App',
