@@ -8,6 +8,10 @@
                 <v-btn @click="togglePlaying()">Play</v-btn>
                 <v-btn @click="goToNext()">Next</v-btn>
                 <v-slider step="0.01" min="0" max="1" v-model="volume"></v-slider>
+                <knob-control v-model="volume"
+                :min="0"
+                :max="1"
+                :stepSize="0.01"/>
             </div>
             <div class="justify-start flex-wrap ma-16">
                 <v-progress-linear height="10" rounded @change="goToPercent" 
@@ -18,8 +22,14 @@
     </div>
 </template>
 <script>
+
+import KnobControl from 'vue-knob-control'
+
 export default {
     name:'MusicPlayer',
+    components:{
+        KnobControl
+    },
     data:()=>({
         timer:0,
         timerPercent: 0,
