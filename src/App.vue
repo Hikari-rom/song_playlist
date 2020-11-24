@@ -38,22 +38,20 @@
     </v-app-bar> -->
 
     <v-main>
-      
-      <MusicPlayer>
         <router-view></router-view>
-      </MusicPlayer>
+        <!-- <MusicPlayer/> -->
     </v-main>
   </v-app>
 </template>
 
 <script>
-  import MusicPlayer from './components/MusicPlayer';
+  // import MusicPlayer from './components/MusicPlayer';
 
 export default {
   name: 'App',
 
   components: {
-    MusicPlayer,
+    // MusicPlayer,
   },
 
   data: () => ({

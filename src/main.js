@@ -9,12 +9,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/', name:'MusicPlayer',
-    component: () => import('./components/MusicPlayer.vue')
+    path: '/artist/:artistId', name:'Artiste',
+    component: () => import('./components/ArtistDetails.vue')
   },
   {
-    path: '/artist/:id', name:'Artiste',
-    component: () => import('./components/ArtistDetails.vue')
+    path: '/', name:'MusicPlayer',
+    component: () => import('./components/SongsParent.vue')
   },
 ]
 

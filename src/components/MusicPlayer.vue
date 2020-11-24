@@ -1,56 +1,7 @@
 <template>
     <div>
         <!-- ontimeupdate="updateBar()" -->
-            List of Songs
-            <v-data-table
-                :headers="headers"
-                :items="songs"
-                item-key="title"
-                :search="search"
-                >
-                <template v-slot:top>
-                    <v-text-field
-                        v-model="search"
-                        label="Search"
-                    ></v-text-field>
-                </template>
-                <template
-                 v-slot:body="{ items }">
-                <tbody>
-                    <tr
-                        v-for="song in items"
-                        :key="song.id">
-                        <td @click="goToSong(song.id)" >{{song.title}}</td>
-                        <td>{{song.artist.firstName}} {{song.artist.lastName}}</td>
-                        <td>
-                            <v-btn icon><v-icon @click="checkFavorites(song.id)" :class="{'isFav':song.favorite===true}">mdi-heart</v-icon></v-btn>
-                            <v-btn icon><v-icon @click="addToWaitingList(song.id)">mdi-playlist-plus</v-icon></v-btn>
-                        </td>
-                    </tr>
-                </tbody>
-                </template>
-            </v-data-table>
-
             <p> Titre en cours : {{actualSong.title}} </p>
-            <v-dialog max-width="290">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on">
-                        <v-icon>mdi-heart-multiple</v-icon>
-                    </v-btn>
-                </template>
-                <v-card>
-                    <v-card-title class="headline">
-                        Favorites List
-                    </v-card-title>
-                    <v-card-text>
-                        <ul>
-                            <li v-for="fav in favorites" :key="fav.title">
-                                {{fav.title}}
-                            </li>
-                        </ul>
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
             <v-img contain max-height="200" :src="actualSong.cover"></v-img>
             <div class="cent-align">
                 <v-btn @click="goToPrev()">Prev</v-btn>
@@ -70,50 +21,8 @@
 export default {
     name:'MusicPlayer',
     data:()=>({
-        songs:[
-            {
-                id:1,
-                title: "Lucid Dreaming",
-                mp3: "https://www.free-stock-music.com/music/fsm-team-escp-lucid-dreaming.mp3",
-                cover: "https://www.free-stock-music.com/thumbnails/fsm-team-escp-lucid-dreaming.jpg",
-                favorite: false,
-                artist:{
-                    id:1,
-                    firstName:"Kristian",
-                    lastName:"Kostov",
-                }
-            },
-            {
-                id:2,
-                title: "Potato Fries",
-                mp3: "https://www.free-stock-music.com/music/potatofries-maittre-sara-olsen-ocean.mp3",
-                cover: "https://www.free-stock-music.com/thumbnails/potatofries-maittre-sara-olsen-ocean.jpg",
-                favorite: false,
-                artist:{
-                    id:2,
-                    firstName:"Charlotte",
-                    lastName:"Perrelli",
-                }
-            },
-            {
-                id:3,  
-                title: "This valley of Untold Emotion",
-                mp3: "https://www.free-stock-music.com/music/chillin_wolf-this-valley-of-untold-emotion.mp3",
-                cover: "https://www.free-stock-music.com/thumbnails/chillin_wolf-this-valley-of-untold-emotion.jpg",
-                favorite: false,
-                artist:{
-                    id:3,
-                    firstName:"Yoko",
-                    lastName:"Shimomura",
-                }
-            }
-        ],
-        search:'',
-        waitingList:[],
-        favorites:[],
         timer:0,
         timerPercent: 0,
-        playing: false,
         actualSong:{},
         audioPage: null,
         totalDuration: "",
@@ -121,34 +30,23 @@ export default {
         position: 1,
         volume: 1
     }),
+    props:{
+        songs:Array,
+        waitingList: Array,
+        playing: Boolean,
+    },
     methods:{
         togglePlaying() {
-            this.playing = !this.playing
+            this.$emit('update:playing',!this.playing)
+            // this.playing = !this.playing
             this.totalDurationSec = this.audioPage.duration
-        },
-        checkFavorites(id)
-        {
-            let index = this.songs.findIndex(song => song.id === id)
-            let indexFav = this.favorites.findIndex(song => song.id === this.songs[index].id)
-            if( indexFav === -1 ){
-                this.favorites.push(this.songs[index])
-                this.songs[index].favorite = true
-            }
-            else
-            {
-                this.favorites.splice(indexFav, 1)
-                this.songs[index].favorite = false
-            }
-        },
-        addToWaitingList(id){
-            console.log(id)
-            this.waitingList.push(this.songs.find(song => song.id === id))
         },
         goToPercent(value){
             let alreadyPlaying = false
             if(!this.playing)
             {
-                this.playing = !this.playing
+                this.$emit('update:playing',!this.playing)
+                // this.playing = !this.playing
                 alreadyPlaying = true
 
             }
@@ -161,7 +59,8 @@ export default {
             let alreadyPlaying = false
             if(this.playing)
             {
-                this.playing = !this.playing
+                this.$emit('update:playing',!this.playing)
+                // this.playing = !this.playing
                 alreadyPlaying = true
             }
             if(this.waitingList.length > 0)
@@ -172,7 +71,8 @@ export default {
                 this.audioPage.src = this.actualSong.mp3
             }
             else{
-                let next = this.findNeighbors(this.actualSong.title).next
+                let next = this.findNeighbors(this.position).next
+                console.log(next)
                 if(next.title !== undefined)
                 {
                     this.actualSong = next
@@ -180,27 +80,29 @@ export default {
                     this.position++
                 }
             }
-            alreadyPlaying && (this.playing = !this.playing)
+            // alreadyPlaying && (this.playing = !this.playing)
+            alreadyPlaying && (this.$emit('update:playing',!this.playing))
         },
         goToPrev(){
             let alreadyPlaying = false
             if(!this.playing)
             {
-                this.playing = !this.playing
+                this.$emit('update:playing',!this.playing)
+                // this.playing = !this.playing
                 alreadyPlaying = true
             }
-            let prev = this.findNeighbors(this.actualSong.title).prev
+            let prev = this.findNeighbors(this.position).prev
             if(prev.title !== undefined)
             {
                 this.actualSong = prev
                 this.audioPage.src = this.actualSong.mp3
                 this.position--
             }
-            alreadyPlaying && (this.playing = !this.playing)
-            
+            // alreadyPlaying && (this.playing = !this.playing)
+            alreadyPlaying && (this.$emit('update:playing',!this.playing))
         },
-        findNeighbors(title){
-            let resultat = this.songs.findIndex( song => song.title === title);
+        findNeighbors(id){
+            let resultat = this.songs.findIndex( song => song.id === id);
             // Terriblement moche : A changer par le biais de la position
             // Modifier en rajoutant un paramètre
             if(resultat == 0){
@@ -239,19 +141,6 @@ export default {
             secDuration < 10 && (secDuration = `0${secDuration}`)
             return `${minDuration} : ${secDuration}`
         },
-        headers:function(){
-            return [
-                {
-                    text: 'Title',
-                },
-                {
-                    text: 'Artiste',
-                },
-                {
-                    text: 'Actions',
-                }
-            ]
-        }
     },
     watch:{
         playing:function(){
@@ -282,14 +171,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.isFav{
-    color: red !important;
-}
-.cent-align{
-    text-align:center;
-}
-
-
-</style>
