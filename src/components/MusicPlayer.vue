@@ -24,14 +24,17 @@
                     ></v-text-field>
                 </template>
                 <template
-                 v-slot:body>
+                 v-slot:body="{ items }">
                 <tbody>
                     <tr
-                        v-for="song in songs"
-                        :key="song.title">
-                        <td>{{song.title}}</td>
+                        v-for="song in items"
+                        :key="song.id">
+                        <td @click="goToSong(song.id)" >{{song.title}}</td>
                         <td>{{song.artist.firstName}} {{song.artist.lastName}}</td>
-                        <td></td>
+                        <td>
+                            <v-btn icon><v-icon @click="checkFavorites(song.id)" :class="{'isFav':song.favorite===true}">mdi-heart</v-icon></v-btn>
+                            <v-btn icon><v-icon @click="addToWaitingList(song.id)">mdi-playlist-plus</v-icon></v-btn>
+                        </td>
                     </tr>
                 </tbody>
                 </template>
@@ -78,6 +81,7 @@ export default {
     data:()=>({
         songs:[
             {
+                id:1,
                 title: "Lucid Dreaming",
                 mp3: "https://www.free-stock-music.com/music/fsm-team-escp-lucid-dreaming.mp3",
                 cover: "https://www.free-stock-music.com/thumbnails/fsm-team-escp-lucid-dreaming.jpg",
@@ -88,6 +92,7 @@ export default {
                 }
             },
             {
+                id:2,
                 title: "Potato Fries",
                 mp3: "https://www.free-stock-music.com/music/potatofries-maittre-sara-olsen-ocean.mp3",
                 cover: "https://www.free-stock-music.com/thumbnails/potatofries-maittre-sara-olsen-ocean.jpg",
@@ -97,7 +102,8 @@ export default {
                     lastName:"Perrelli",
                 }
             },
-            {  
+            {
+                id:3,  
                 title: "This valley of Untold Emotion",
                 mp3: "https://www.free-stock-music.com/music/chillin_wolf-this-valley-of-untold-emotion.mp3",
                 cover: "https://www.free-stock-music.com/thumbnails/chillin_wolf-this-valley-of-untold-emotion.jpg",
@@ -118,7 +124,7 @@ export default {
         audioPage: null,
         totalDuration: "",
         totalDurationSec: 0,
-        position: 0,
+        position: 1,
         volume: 1
     }),
     methods:{
@@ -126,10 +132,10 @@ export default {
             this.playing = !this.playing
             this.totalDurationSec = this.audioPage.duration
         },
-        checkFavorites(index){
-            
-            let indexFav = this.favorites.findIndex(song => song.title === this.songs[index].title)
-            console.log(indexFav)
+        checkFavorites(id)
+        {
+            let index = this.songs.findIndex(song => song.id === id)
+            let indexFav = this.favorites.findIndex(song => song.id === this.songs[index].id)
             if( indexFav === -1 ){
                 this.favorites.push(this.songs[index])
                 this.songs[index].favorite = true
@@ -139,11 +145,10 @@ export default {
                 this.favorites.splice(indexFav, 1)
                 this.songs[index].favorite = false
             }
-            
         },
-        addToWaitingList(index){
-            console.log(index)
-            this.waitingList.push(this.songs[index])
+        addToWaitingList(id){
+            console.log(id)
+            this.waitingList.push(this.songs.find(song => song.id === id))
         },
         goToPercent(value){
             let alreadyPlaying = false
@@ -213,7 +218,8 @@ export default {
                 return {prev:this.songs[resultat-1],next:this.songs[resultat+1]}
             }
         },
-        goToSong(position){
+        goToSong(id){
+            let position = this.songs.findIndex(song => song.id === id);
             this.actualSong = this.songs[position]
             this.audioPage.src = this.songs[position].mp3
             this.position = position
