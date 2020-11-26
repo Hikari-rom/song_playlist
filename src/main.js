@@ -7,20 +7,6 @@ Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-      .register('service-worker.js', {
-          scope: '/'
-      })
-      .then(registration => {
-          console.log('Registration OK');
-          console.log(registration)
-      })
-      .catch(error => {
-          console.error('Erreur: ', error);
-      });
-}
-
 
 const routes = [
   {
