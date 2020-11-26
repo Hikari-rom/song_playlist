@@ -1,5 +1,5 @@
 workbox.routing.registerRoute(
-    ({url}) => url.startsWith("https://www.free-stock-music.com/"),
+    ({url}) => url.origin.startsWith('https://www.free-stock'),
         new workbox.strategies.CacheFirst({
             cacheName: "songsCache",
         })
