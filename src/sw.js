@@ -1,7 +1,4 @@
-self.addEventListener('fetch', function (event) {
-    event.respondWith(
-        caches.match(event.request).then(function (response) {
-            return response || fetch(event.request);
-        })
-    );
-});
+workbox.routing.registerRoute(
+    ({url}) => url.origin.startsWith('https://www.free-stock-music.com/'),
+    new workbox.strategies.CacheFirst()
+)
