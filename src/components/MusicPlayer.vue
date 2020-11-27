@@ -124,12 +124,12 @@ export default {
                 return {prev:this.songs[resultat-1],next:this.songs[resultat+1]}
             }
         },
-        goToSong(id){
-            let position = this.songs.findIndex(song => song.id === id);
-            this.actualSong = this.songs[position]
-            this.audioPage.src = this.songs[position].mp3
-            this.position = position
-        }
+        // goToSong(id){
+        //     let position = this.songs.findIndex(song => song.id === id);
+        //     this.actualSong = this.songs[position]
+        //     this.audioPage.src = this.songs[position].mp3
+        //     this.position = position
+        // }
     },
     computed:{
         getTimerDuration:function(){

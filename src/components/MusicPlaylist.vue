@@ -19,7 +19,7 @@
                     <tr
                         v-for="song in items"
                         :key="song.id">
-                        <td @click="goToSong(song.id)">{{song.title}}</td>
+                        <td> {{song.title}}</td>
                         <td @click="goToArtistDetails(song.artist.id)">{{song.artist.firstName}} {{song.artist.lastName}}</td>
                         <td>
                             <v-btn icon><v-icon @click="checkFavorites(song.id)" :class="{'isFav':song.favorite===true}">mdi-heart</v-icon></v-btn>
