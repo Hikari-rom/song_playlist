@@ -86,6 +86,7 @@ export default {
         },
         addToWaitingList(id){
             this.waitingList.push(this.songs.find(song => song.id === id))
+            this.$emit('update:waitingList',this.waitingList)
         },
         goToArtistDetails(artistId){
             this.$router.push({name:'Artiste', params:{artistId} })
