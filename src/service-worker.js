@@ -6,7 +6,7 @@ workbox.routing.registerRoute(
 )
 
 workbox.routing.registerRoute(
-    ({url}) => url.origin.endsWith('mp3'),
+    ({url}) => url.pathname.endsWith('mp3'),
         new workbox.strategies.CacheFirst({
             cacheName: "mp3Cache",
         })
