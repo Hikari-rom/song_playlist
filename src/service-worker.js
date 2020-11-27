@@ -1,6 +1,6 @@
 workbox.routing.registerRoute(
     ({url}) => url.pathname.endsWith('jpg'),
-        new workbox.strategies.CacheFirst({
+        new workbox.strategies.NetworkFirst({
             cacheName: "imageCache",
         })
 )
