@@ -2,8 +2,8 @@ export const songs = [
     {
         id:1,
         title: "Lucid Dreaming",
-        mp3: "https://www.free-stock-music.com/music/fsm-team-escp-lucid-dreaming.mp3",
-        cover: "https://www.free-stock-music.com/thumbnails/fsm-team-escp-lucid-dreaming.jpg",
+        mp3: "mp3/fsm-team-escp-lucid-dreaming.mp3",
+        cover: "img/covers/fsm-team-escp-lucid-dreaming.jpg",
         favorite: false,
         artist:{
             id:1,
@@ -14,8 +14,8 @@ export const songs = [
     {
         id:2,
         title: "Potato Fries",
-        mp3: "https://www.free-stock-music.com/music/potatofries-maittre-sara-olsen-ocean.mp3",
-        cover: "https://www.free-stock-music.com/thumbnails/potatofries-maittre-sara-olsen-ocean.jpg",
+        mp3: "mp3/potatofries-maittre-sara-olsen-ocean.mp3",
+        cover: "img/covers/potatofries-maittre-sara-olsen-ocean.jpg",
         favorite: false,
         artist:{
             id:2,
@@ -26,13 +26,49 @@ export const songs = [
     {
         id:3,  
         title: "This valley of Untold Emotion",
-        mp3: "https://www.free-stock-music.com/music/chillin_wolf-this-valley-of-untold-emotion.mp3",
-        cover: "https://www.free-stock-music.com/thumbnails/chillin_wolf-this-valley-of-untold-emotion.jpg",
+        mp3: "mp3/potatofries-maittre-sara-olsen-ocean.mp3",
+        cover: "img/covers/chillin_wolf-this-valley-of-untold-emotion.jpg",
         favorite: false,
         artist:{
             id:3,
             firstName:"Yoko",
             lastName:"Shimomura",
+        }
+    },
+    {
+        id:4,
+        title: "Big Girl (You are Beautiful)",
+        mp3: 'mp3/MIKA - Big Girl (You Are Beautiful).mp3',
+        cover: 'img/covers/Mika_Big_Girl.jpg',
+        favorite: false,
+        artist:{
+            id:4,
+            firstName:"Michael",
+            lastName:"Holebrook"
+        }
+    },
+    {
+        id:5,
+        title: "We are Golden",
+        mp3: 'mp3/MIKA - We Are Golden.mp3',
+        cover: 'img/covers/Mika_We_are_Golden.jpg',
+        favorite: false,
+        artist:{
+            id:4,
+            firstName:"Michael",
+            lastName:"Holebrook"
+        }
+    },
+    {
+        id:6,
+        title: "Happy Ending",
+        mp3: 'mp3/MIKA - Happy Ending.mp3',
+        cover: 'img/covers/Mika_Happy_Ending.jpg',
+        favorite: false,
+        artist:{
+            id:4,
+            firstName:"Michael",
+            lastName:"Holebrook"
         }
     }
 ];
@@ -52,5 +88,11 @@ export const artists = [{
     firstName:"Yoko",
     lastName:"Shimomura",
     age: 52
+},
+{
+    id:4,
+    firstName:"Michael",
+    lastName:"Holebrook",
+    age: 37
 }
 ];
