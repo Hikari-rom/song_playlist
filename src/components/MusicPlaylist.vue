@@ -39,7 +39,7 @@
                 </template>
                 <v-card>
                     <v-card-title class="headline">
-                        Favorites List
+                        Favorites list ordered by last like
                     </v-card-title>
                     <v-card-text>
                         <ul>
@@ -71,18 +71,20 @@ export default {
             let indexFav = this.favorites.findIndex(song => song.id === this.songs[index].id)
 
             if( indexFav === -1 ){
-                this.$emit('update:favorites',this.favorites.push(this.songs[index]))
-                // this.favorites.push(this.songs[index])
-                // this.songs[index].favorite = true
+                this.favorites.unshift(this.songs[index])
+                this.$emit('update:favorites',this.favorites)
+                this.songs[index].favorite = true
+                this.$emit('update:songs',this.songs)
             }
             else
             {
                 this.favorites.splice(indexFav, 1)
+                this.$emit('update:favorites',this.favorites)
                 this.songs[index].favorite = false
+                this.$emit('update:songs',this.songs)
             }
         },
         addToWaitingList(id){
-            console.log(id)
             this.waitingList.push(this.songs.find(song => song.id === id))
         },
         goToArtistDetails(artistId){
