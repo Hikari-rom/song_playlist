@@ -1,3 +1,4 @@
+/* eslint-disable */
 workbox.routing.registerRoute(
     ({url}) => url.pathname.endsWith('jpg'),
         new workbox.strategies.CacheFirst({
