@@ -7,7 +7,6 @@
                 <v-btn @click="goToPrev()">Prev</v-btn>
                 <v-btn @click="togglePlaying()">Play</v-btn>
                 <v-btn @click="goToNext()">Next</v-btn>
-                <v-slider step="0.01" min="0" max="1" v-model="volume"></v-slider>
                 <knob-control v-model="volume"
                 :min="0"
                 :max="1"
