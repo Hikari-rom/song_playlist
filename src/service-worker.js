@@ -7,7 +7,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
     ({url}) => url.pathname.endsWith('mp3'),
-        new workbox.strategies.CacheFirst({
+        new workbox.strategies.StaleWhileRevalidate({
             cacheName: "mp3Cache",
         })
 )
