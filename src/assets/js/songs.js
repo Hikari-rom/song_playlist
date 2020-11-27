@@ -26,7 +26,7 @@ export const songs = [
     {
         id:3,  
         title: "This valley of Untold Emotion",
-        mp3: "mp3/potatofries-maittre-sara-olsen-ocean.mp3",
+        mp3: "mp3/chillin_wolf-this-valley-of-untold-emotion.mp3",
         cover: "img/covers/chillin_wolf-this-valley-of-untold-emotion.jpg",
         favorite: false,
         artist:{
