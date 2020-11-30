@@ -1,7 +1,7 @@
 <template>
-    <div>
-    List of Songs
+    <div class="playlist">
     <v-data-table
+        dark
         :headers="headers"
         :items="songs"
         item-key="title"
@@ -34,7 +34,7 @@
             <v-dialog max-width="290">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn icon v-bind="attrs" v-on="on">
-                        <v-icon>mdi-heart-multiple</v-icon>
+                        <v-icon class="isFav">mdi-heart-multiple</v-icon>
                     </v-btn>
                 </template>
                 <v-card>
@@ -116,5 +116,10 @@ export default {
 .cent-align{
     text-align:center;
 }
-
+.playlist{
+    background-color: #1E1E1E;
+}
+.list{
+    background-color:#898888;
+}
 </style>

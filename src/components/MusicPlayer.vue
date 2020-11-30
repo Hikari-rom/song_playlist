@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="player">
         <!-- ontimeupdate="updateBar()" -->
             <p> Titre en cours : {{actualSong.title}} </p>
             <v-img contain max-height="200" :src="actualSong.cover"></v-img>
             <div class="cent-align">
                 <v-btn @click="goToPrev()">Prev</v-btn>
-                <v-btn @click="togglePlaying()">Play</v-btn>
+                <v-btn @click="togglePlaying()"><v-icon>mdi-play-pause</v-icon></v-btn>
                 <v-btn @click="goToNext()">Next</v-btn>
                 <knob-control v-model="volume"
                 :min="0"
@@ -81,7 +81,6 @@ export default {
             }
             else{
                 let next = this.findNeighbors(this.position).next
-                console.log(next)
                 if(next.title !== undefined)
                 {
                     this.actualSong = next
@@ -180,3 +179,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.player{
+    background-color: #1e1e1e;;
+}
+</style>
